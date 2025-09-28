@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Agent</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 40px;
+        }
+        #resultsContainer {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            white-space: pre-wrap; /* Allows text to wrap and preserves formatting */
+        }
+    </style>
+</head>
+<body>
+    <h1>Research Agent</h1>
+    <button id="pythonNewsBtn">Get Python News</button>
+    <button id="githubTrendingBtn">Get GitHub Trending</button>
+
+    <div id="resultsContainer"></div>
+
+    <script>
+        const pythonNewsBtn = document.getElementById('pythonNewsBtn');
+        const githubTrendingBtn = document.getElementById('githubTrendingBtn');
+        const resultsContainer = document.getElementById('resultsContainer');
+
+        pythonNewsBtn.addEventListener('click', () => {
+            fetch('/api/pythonnews')
+                .then(response => response.json())
+                .then(data => {
+                    resultsContainer.textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    resultsContainer.textContent = 'Error fetching Python news: ' + error;
+                });
+        });
+
+        githubTrendingBtn.addEventListener('click', () => {
+            fetch('/api/githubtrending')
+                .then(response => response.json())
+                .then(data => {
+                    resultsContainer.textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    resultsContainer.textContent = 'Error fetching GitHub trending data: ' + error;
+                });
+        });
+    </script>
+</body>
+</html>

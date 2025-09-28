@@ -1,0 +1,65 @@
+You are a Python ecosystem research analyst and expert. I need you to conduct a COMPREHENSIVE and THOROUGH analysis of the current Python landscape. Here's what I've gathered from web searches, but I need you to go much deeper.
+
+    ## SEARCH DATA PROVIDED:
+    {all_search_data}
+
+    ## YOUR MISSION:
+    Using the search data above as a starting point, I need you to:
+
+    ### 1. OFFICIAL PYTHON DEVELOPMENTS
+    - Analyze ALL Python 3.13+ features, releases, and roadmap updates
+    - Deep dive into recently accepted PEPs and their implications
+    - Research Python core team decisions and architectural changes
+    - Investigate performance improvements and optimization work
+    - Look into Python's future direction and strategic initiatives
+
+    ### 2. EXPERT INSIGHTS & THOUGHT LEADERSHIP
+    - Research what Raymond Hettinger, Brett Cannon, Tim Peters, David Beazley, and other Python luminaries are saying
+    - Find their latest talks, blog posts, tweets, and technical insights
+    - Analyze their predictions and recommendations for Python developers
+    - Look for controversial opinions or debates within the Python community
+
+    ### 3. ECOSYSTEM & TOOLING EVOLUTION
+    - Investigate the latest in Python packaging (uv, Poetry, pip-tools evolution)
+    - Research async/await ecosystem developments and new patterns
+    - Analyze typing system improvements and new annotation features
+    - Look into Python's performance initiatives (faster CPython, PyPy developments)
+    - Research new testing frameworks, linting tools, and development workflows
+
+    ### 4. COMMUNITY & INDUSTRY TRENDS
+    - Analyze discussions from PyCon 2024/2025, EuroPython, and Python Language Summit
+    - Research trending Python projects and emerging libraries
+    - Investigate industry adoption patterns and enterprise Python use
+    - Look for startup and big tech Python innovations
+    - Find emerging Python use cases and applications
+
+    ### 5. TECHNICAL DEEP DIVES
+    - Research advanced Python patterns gaining popularity
+    - Investigate performance benchmarking and optimization techniques
+    - Analyze security updates and best practices
+    - Look into Python's role in AI/ML, data science, and emerging tech
+    - Research cross-platform and deployment innovations
+
+    ## RESEARCH REQUIREMENTS:
+    - Use web search capabilities extensively to find the LATEST information
+    - Cross-reference multiple sources for accuracy
+    - Focus on content from the last 6 months (priority) and up to 2 years
+    - Include both technical details AND practical implications
+    - Identify trends, not just individual news items
+    - Look for information that might not be in my initial search queries
+
+    ## OUTPUT FORMAT:
+    Provide a structured, comprehensive report with:
+
+    1. **Executive Summary** (key trends and must-know updates)
+    2. **Official Python Updates** (releases, PEPs, core developments)
+    3. **Expert Insights** (what thought leaders are saying)
+    4. **Ecosystem Evolution** (tooling, libraries, workflows)
+    5. **Community Highlights** (conferences, discussions, debates)
+    6. **Technical Breakthroughs** (performance, features, patterns)
+    7. **Future Outlook** (predictions, roadmap, emerging trends)
+    8. **Actionable Recommendations** (what developers should do/learn)
+
+    Make this report comprehensive enough that a Python developer reading it would be completely up-to-date on everything important happening in the Python world. Leave no stone unturned - this should be the definitive Python ecosystem update.
+
+    IMPORTANT: Use your web search tools extensively throughout your research. Don't just rely on the initial search data - actively search for more information as you analyze each section.
