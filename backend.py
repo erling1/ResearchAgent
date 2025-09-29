@@ -1,3 +1,4 @@
+
 #fastpi
 from fastapi import Depends, FastAPI, WebSocket, Request, HTTPException
 from fastapi.staticfiles import StaticFiles
@@ -5,33 +6,34 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 #needed packages
 from contextlib import asynccontextmanager
+from typing import AsyncGenerator   # <-- missing import
 import logging 
 import os 
 import dataclasses
 from openai import AsyncOpenAI
-from azure.cosmos import CosmosClient, exceptions, ContainerClient
+from azure.cosmos import CosmosClient, exceptions
+from azure.cosmos.container import ContainerProxy
+import asyncio
+import time  # <-- should be grouped here, not repeated later
+
 #own classes 
-from HomeMadeClasses.ai_manager import AiManager, WebSearch
+from HomeMadeClasses.ai_manager import AiManager
+from HomeMadeClasses.web_search import WebSearch
 
 
 
 
 
-#AZURE_OPENAI_ENDPOINT = os.getenv('AZURE_OPENAI_ENDPOINT')
-OPENAI_APIKEY = os.getenv('OPENAI_APIKEY')
-#AZURE_OPENAI_VERSION = os.getenv('AZURE_OPENAI_VERSION')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 COSMOS_URI = os.getenv("COSMOS_URI") 
-COSMOS_KEY = os.getenv(COSMOS_KEY)
-DATABASE_NAME = "MyDatabase"
-CONTAINER_NAME = "MyContainer"
-
+COSMOS_KEY = os.getenv("COSMOS_KEY")
 WEB_SEARCH_API_KEY = os.getenv("WEB_SEARCH_API_KEY")
 
 ai_manager: AiManager
 openai_client: AsyncOpenAI
 azure_cosmos_db_client: CosmosClient
 web_search_client: WebSearch
-container: ContainerClient 
+container: ContainerProxy
 
 
 @asynccontextmanager
@@ -43,12 +45,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
     global container
 
     
-    openai_client = AsyncOpenAI(api_key=OPENAI_APIKEY)
+    openai_client = AsyncOpenAI(api_key=OPENAI_API_KEY)
     ai_manager = AiManager(openai_client=openai_client)
     azure_cosmos_db_client = CosmosClient(COSMOS_URI, 
                                           credential=COSMOS_KEY
                                           )
-    database = client.get_database_client("database1")
+    database = azure_cosmos_db_client.get_database_client("database1")
     
 
     container = database.get_container_client("container1")
@@ -199,7 +201,7 @@ async def get_latest_pythonnews_endpoint(user: User = Depends(HTTPAuthorizer)):
     with open("pythonnews_prompt.txt", "r") as file:
             python_prompt = file.read()
 
-     results_text = "\n\n".join(
+    results_text = "\n\n".join(
         f"- {r.get('title')}\n  {r.get('link')}\n  {r.get('snippet')}"
         for r in search_results
     )
@@ -207,6 +209,8 @@ async def get_latest_pythonnews_endpoint(user: User = Depends(HTTPAuthorizer)):
     
     
     full_prompt = f"{python_prompt}\n\nHere are the search results:\n\n{results_text}"
+
+    #returns just the text format 
     response = ai_manager.gen_openai_response(full_prompt)
 
     return response
@@ -214,6 +218,7 @@ async def get_latest_pythonnews_endpoint(user: User = Depends(HTTPAuthorizer)):
 
 @app.get("/api/githubtrending")
 async def get_githubtrending_endpoint(user: User = Depends(HTTPAuthorizer)):
+    pass
 
 
 
