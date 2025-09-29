@@ -3,6 +3,8 @@
 from fastapi import Depends, FastAPI, WebSocket, Request, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi.responses import FileResponse
+from fastapi.responses import JSONResponse
 
 #needed packages
 from contextlib import asynccontextmanager
@@ -15,7 +17,7 @@ from azure.cosmos import CosmosClient, exceptions
 from azure.cosmos.container import ContainerProxy
 import asyncio
 import time  # <-- should be grouped here, not repeated later
-
+from itertools import chain 
 #own classes 
 from HomeMadeClasses.ai_manager import AiManager
 from HomeMadeClasses.web_search import WebSearch
@@ -57,8 +59,10 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
 
     web_search_client = WebSearch(api_key=WEB_SEARCH_API_KEY)
 
+    yield
 
-app = FastAPI()
+
+app = FastAPI(lifespan=lifespan)
 
 security = HTTPBearer()
 
@@ -68,18 +72,41 @@ app.mount("/frontpage/pages", StaticFiles(directory="frontpage/pages"),name="pag
 
 @app.middleware("http")
 async def add_process_header(request: Request, call_next):
-    
     try:
-
         start_time = time.perf_counter()
+
+
+         # Log request details
+        logging.info("="*50)
+        logging.info(f"Request URL: '{request.url}'")
+        logging.info(f"Request method: '{request.method}'")
+        logging.info("Request headers:")
+        for header_name, header_value in request.headers.items():
+            # Redact sensitive headers
+            if header_name.lower() in ['authorization', 'cookie', 'api-key']:
+                logging.info(f"    '{header_name}': 'REDACTED'")
+            else:
+                logging.info(f"    '{header_name}': '{header_value}'")
+        
+        # Log query parameters if any
+        if request.query_params:
+            logging.info("Query parameters:")
+            for param, value in request.query_params.items():
+                logging.info(f"    '{param}': '{value}'")
+
+
         response = await call_next(request)
         process_time = time.perf_counter() - start_time
         logging.info(f"Request process time: {process_time}")
-    except:
-
-        logging.info(f"Exception occured in middleware connection check: {Exception}")
+        return response
+    except Exception as e:
+        logging.error(f"Exception occurred in middleware: {e}", exc_info=True)
+        # Return a proper error response instead of None
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal server error", "error": str(e)}
+        )
     
-    return response
 
 
 @dataclasses.dataclass
@@ -198,12 +225,16 @@ async def get_latest_pythonnews_endpoint(user: User = Depends(HTTPAuthorizer)):
 
     search_results = await asyncio.gather(*tasks)
 
+    flattend_search_results = list(chain.from_iterable(search_results))
+
     with open("pythonnews_prompt.txt", "r") as file:
             python_prompt = file.read()
 
+    logging.info(f"search_results: {search_results}")
+
     results_text = "\n\n".join(
         f"- {r.get('title')}\n  {r.get('link')}\n  {r.get('snippet')}"
-        for r in search_results
+        for r in flattend_search_results
     )
 
     
@@ -211,7 +242,7 @@ async def get_latest_pythonnews_endpoint(user: User = Depends(HTTPAuthorizer)):
     full_prompt = f"{python_prompt}\n\nHere are the search results:\n\n{results_text}"
 
     #returns just the text format 
-    response = ai_manager.gen_openai_response(full_prompt)
+    response = await ai_manager.gen_openai_respons(full_prompt)
 
     return response
 
@@ -221,4 +252,7 @@ async def get_githubtrending_endpoint(user: User = Depends(HTTPAuthorizer)):
     pass
 
 
-
+@app.get("/")
+async def read_root():
+    """Serve the main HTML page"""
+    return FileResponse("frontpage/pages/index.html")

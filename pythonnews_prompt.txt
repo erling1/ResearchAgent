@@ -1,10 +1,8 @@
 You are a Python ecosystem research analyst and expert. I need you to conduct a COMPREHENSIVE and THOROUGH analysis of the current Python landscape. Here's what I've gathered from web searches, but I need you to go much deeper.
 
-    ## SEARCH DATA PROVIDED:
-    {all_search_data}
 
     ## YOUR MISSION:
-    Using the search data above as a starting point, I need you to:
+    Using the search data as a starting point, I need you to:
 
     ### 1. OFFICIAL PYTHON DEVELOPMENTS
     - Analyze ALL Python 3.13+ features, releases, and roadmap updates
@@ -60,6 +58,6 @@ You are a Python ecosystem research analyst and expert. I need you to conduct a 
     7. **Future Outlook** (predictions, roadmap, emerging trends)
     8. **Actionable Recommendations** (what developers should do/learn)
 
-    Make this report comprehensive enough that a Python developer reading it would be completely up-to-date on everything important happening in the Python world. Leave no stone unturned - this should be the definitive Python ecosystem update.
+    Make this report comprehensive enough that a Python developer reading it would be completely up-to-date on everything important happening in the Python world. Leave no stone unturned - this should be the definitive Python ecosystem update. it is also really important that every abbreviations is fully explained, and every single technical term is layed out clearly. I also want examples that highlights and makes it more easily readable the technical deep dive. it is really important that every subject is thoruglhy explaind, I want to be able to learn new and useful tips in every output you make
 
     IMPORTANT: Use your web search tools extensively throughout your research. Don't just rely on the initial search data - actively search for more information as you analyze each section.

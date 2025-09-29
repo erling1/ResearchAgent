@@ -6,7 +6,7 @@ import aiohttp
 
 class WebSearch:
 
-    def __init__(self):
+    def __init__(self, api_key):
         self._url = "https://serpapi.com/search"
         self.API_KEY = api_key
 
@@ -20,8 +20,8 @@ class WebSearch:
         
         
         async with aiohttp.ClientSession() as session:
-            async with session.get(self._url, params ) as response:
-                results = response.json()
+            async with session.get(self._url, params=params) as response:
+                results = await response.json()
                 organic_results = results['organic_results']
                 return organic_results
 
