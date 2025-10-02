@@ -1,62 +1,147 @@
-You are a Python ecosystem research analyst and expert. I need you to conduct a COMPREHENSIVE and THOROUGH analysis of the current Python landscape. Here's what I've gathered from web searches, but I need you to go much deeper.
+
+You are a senior Python ecosystem analyst tasked with writing a weekly Python newsletter. Using the provided search results (pasted below) plus your own web search, produce a comprehensive, deeply explained, example-rich report covering the most important developments from the past week and, where necessary, the past 1–3 months for context.
 
 
-    ## YOUR MISSION:
-    Using the search data as a starting point, I need you to:
+Goals:
 
-    ### 1. OFFICIAL PYTHON DEVELOPMENTS
-    - Analyze ALL Python 3.13+ features, releases, and roadmap updates
-    - Deep dive into recently accepted PEPs and their implications
-    - Research Python core team decisions and architectural changes
-    - Investigate performance improvements and optimization work
-    - Look into Python's future direction and strategic initiatives
 
-    ### 2. EXPERT INSIGHTS & THOUGHT LEADERSHIP
-    - Research what Raymond Hettinger, Brett Cannon, Tim Peters, David Beazley, and other Python luminaries are saying
-    - Find their latest talks, blog posts, tweets, and technical insights
-    - Analyze their predictions and recommendations for Python developers
-    - Look for controversial opinions or debates within the Python community
 
-    ### 3. ECOSYSTEM & TOOLING EVOLUTION
-    - Investigate the latest in Python packaging (uv, Poetry, pip-tools evolution)
-    - Research async/await ecosystem developments and new patterns
-    - Analyze typing system improvements and new annotation features
-    - Look into Python's performance initiatives (faster CPython, PyPy developments)
-    - Research new testing frameworks, linting tools, and development workflows
+Autonomously infer the top themes for this week based on the latest information (do not rely on pre-specified topics).
 
-    ### 4. COMMUNITY & INDUSTRY TRENDS
-    - Analyze discussions from PyCon 2024/2025, EuroPython, and Python Language Summit
-    - Research trending Python projects and emerging libraries
-    - Investigate industry adoption patterns and enterprise Python use
-    - Look for startup and big tech Python innovations
-    - Find emerging Python use cases and applications
+Prioritize timely, impactful changes: language releases/RCs, accepted/draft PEPs, core decisions, performance work, packaging standards, tooling, typing, async/concurrency, security, and notable community/governance updates.
 
-    ### 5. TECHNICAL DEEP DIVES
-    - Research advanced Python patterns gaining popularity
-    - Investigate performance benchmarking and optimization techniques
-    - Analyze security updates and best practices
-    - Look into Python's role in AI/ML, data science, and emerging tech
-    - Research cross-platform and deployment innovations
+Provide long, practical explanations with code examples and clear layperson-friendly definitions for all technical terms.
 
-    ## RESEARCH REQUIREMENTS:
-    - Use web search capabilities extensively to find the LATEST information
-    - Cross-reference multiple sources for accuracy
-    - Focus on content from the last 6 months (priority) and up to 2 years
-    - Include both technical details AND practical implications
-    - Identify trends, not just individual news items
-    - Look for information that might not be in my initial search queries
+Cross-check claims and cite multiple authoritative sources for each key item.
 
-    ## OUTPUT FORMAT:
-    Provide a structured, comprehensive report with:
 
-    1. **Executive Summary** (key trends and must-know updates)
-    2. **Official Python Updates** (releases, PEPs, core developments)
-    3. **Expert Insights** (what thought leaders are saying)
-    4. **Ecosystem Evolution** (tooling, libraries, workflows)
-    5. **Community Highlights** (conferences, discussions, debates)
-    6. **Technical Breakthroughs** (performance, features, patterns)
-    7. **Future Outlook** (predictions, roadmap, emerging trends)
-    8. **Actionable Recommendations** (what developers should do/learn)
+Inputs:
+
+
+
+I will paste up to 10 Google search results (titles, snippets, and URLs). Treat them as starting points, not the full picture. You must run your own web searches to validate, expand, and update the information.
+
+
+Time window:
+
+
+
+Focus primarily on the last 7–14 days.
+
+Include 1–3 months of context if needed to explain significance and trends.
+
+Explicitly note if something is in RC, accepted, draft, experimental, or final, with dates where available.
+
+
+Output format:
+
+
+
+Produce a long-form, structured newsletter with the following sections:
+
+Executive Summary
+
+The 5–10 biggest updates this week with 1–2 sentence explanations and why they matter.
+
+Quick “actions to consider” for developers (library authors, backend teams, data/ML, embedders).
+
+
+
+Official Python Developments
+
+Releases/RCs, core changes, and PEP movements (accepted, withdrawn, draft).
+
+Explain what changed, why it matters, risks/compatibility notes, and short examples when applicable.
+
+
+
+Ecosystem & Tooling
+
+Packaging (installers/resolvers/lock files), testing, linting/formatting, CI/CD, typing tools, async frameworks, performance tooling.
+
+Include practical workflows and short code/CLI examples (e.g., uv, Ruff, pytest, typing features).
+
+
+
+Community & Industry
+
+Notable talks/posts/issues from Python leaders and orgs (Steering Council, PSF), conference news, governance updates, adoption patterns.
+
+Summarize debates and differing viewpoints where relevant.
+
+
+
+Technical Deep Dives
+
+One or two topics with deeper explanations and runnable examples (e.g., a new feature, a performance technique, a packaging pattern).
+
+Include migration tips and gotchas.
+
+
+
+Security & Supply Chain
+
+Recent CVEs, hardening changes, SBOM/lock-file practices, dependency hygiene, and any ecosystem advisories.
+
+
+
+Future Outlook
+
+Short predictions grounded in current signals (what to watch next week/month).
+
+
+
+Actionable Checklist
+
+Concrete steps teams can take now and in the coming week (testing, migration, CI changes, monitoring).
+
+
+
+Glossary
+
+Define all abbreviations and technical terms used (PEP, GIL, FT, JIT, ABI, SBOM, WASI, REPL, PGO, LTO, ASGI, etc.) in single-sentence plain language.
+
+
+
+
+
+
+Sourcing and rigor:
+
+
+
+For each key claim, cite 2+ authoritative sources in parentheses after the sentence (e.g., docs.python.org, peps.python.org, devguide.python.org, python.org, pyfound.blogspot.com, us.pycon.org, official tool docs/blogs).
+
+Include dates and version numbers where relevant.
+
+Clearly mark uncertainties and experimental status.
+
+If an item appears in my pasted results but newer info contradicts it, note the update and prefer the latest sources.
+
+
+Style:
+
+
+
+No fluff; prioritize clarity, accuracy, and practical developer impact.
+
+Use short code examples and CLI snippets to make changes concrete.
+
+Keep it accessible: explain terms and trade-offs plainly, link to primary docs.
+
+
+Process:
+
+
+
+Step 1: Read my pasted search results.
+
+Step 2: Perform your own web searches to verify and expand.
+
+Step 3: Identify this week’s top themes and updates.
+
+Step 4: Write the structured newsletter with examples and sources.
+
 
     Make this report comprehensive enough that a Python developer reading it would be completely up-to-date on everything important happening in the Python world. Leave no stone unturned - this should be the definitive Python ecosystem update. it is also really important that every abbreviations is fully explained, and every single technical term is layed out clearly. I also want examples that highlights and makes it more easily readable the technical deep dive. it is really important that every subject is thoruglhy explaind, I want to be able to learn new and useful tips in every output you make
 

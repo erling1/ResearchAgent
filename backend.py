@@ -13,11 +13,15 @@ import logging
 import os 
 import dataclasses
 from openai import AsyncOpenAI
-from azure.cosmos import CosmosClient, exceptions
+from azure.cosmos import CosmosClient, exceptions, PartitionKey
 from azure.cosmos.container import ContainerProxy
 import asyncio
 import time  # <-- should be grouped here, not repeated later
 from itertools import chain 
+import uuid
+import datetime
+from pydantic import BaseModel
+from typing import Optional, Dict
 #own classes 
 from HomeMadeClasses.ai_manager import AiManager
 from HomeMadeClasses.web_search import WebSearch
@@ -112,6 +116,13 @@ async def add_process_header(request: Request, call_next):
 @dataclasses.dataclass
 class User:
     email: str 
+
+
+class NewsletterRequest(BaseModel):
+    id: str                        
+    title: Optional[str] = None    
+    include_metadata: bool = False 
+    filters: Optional[Dict] = None 
 
 
 class HTTPAuthorizer:
@@ -244,12 +255,75 @@ async def get_latest_pythonnews_endpoint(user: User = Depends(HTTPAuthorizer)):
     #returns just the text format 
     response = await ai_manager.gen_openai_respons(full_prompt)
 
+    partition_key_path = PartitionKey(path="/AIResponse")
+    unique_id = str(uuid.uuid4())
+    timestamp = datetime.datetime.now().strftime('%Y-%m-%d')
+    document = {
+    "id": unique_id,
+    "AIResponse": "all_responses",  # <-- fixed value matching your container PK
+    "response_text": response,
+    "metadata": {
+        "timestamp": timestamp,
+        "model": "gpt-5",
+        "source": "co"
+    }
+}
+    container.create_item(body=document)
+
+
+
     return response
 
 
 @app.get("/api/githubtrending")
 async def get_githubtrending_endpoint(user: User = Depends(HTTPAuthorizer)):
     pass
+
+
+@app.get("/api/newsletters")
+async def get_newsletter_history(user: User = Depends(HTTPAuthorizer)):
+
+    #query = "SELECT * FROM c WHERE c.AIResponse = @pk"
+    parameters = [{"name": "@pk", "value": "AIResponse"}]
+
+    try:
+
+        items = list(container.query_items(
+            query="SELECT * FROM c", 
+            #enable_cross_partition_query=True 
+        ))
+        return items
+
+    except Exception as e:
+
+        raise HTTPException(status_code=500, detail=f"Error fetching news letter history: {str(e)}")
+
+
+@app.get("/api/newsletters/{uuid}")
+async def get_newsletter(newsletter_request: NewsletterRequest,user: User = Depends(HTTPAuthorizer)):
+
+    query = "SELECT * FROM c WHERE c.AIResponse = @pk AND c.id = @id"
+    parameters = [
+        {"name": "@pk", "value": "all_responses"},  # your partition key value
+        {"name": "@id", "value": newsletter_request.id}  # the newsletter UUID
+    ]
+    
+    try:
+        newsletter = list(container.query_items(
+        query=query,
+        parameters=parameters,
+        enable_cross_partition_query=True  # needed if partition key could vary
+    ))
+
+        if len(newsletter) != 1:
+            raise Exception("Could not find a newsletter")
+
+    except:
+        raise HTTPException(status_code=500, detail=f"Error trying to retrive one newsletter")
+
+
+
+
 
 
 @app.get("/")
